@@ -4,9 +4,11 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+    state: {
+        ip:'192.168.43.244:8000/',
+    },
+    getters: {},
+    mutations: {},
+    actions: {},
+    modules: {},
 });

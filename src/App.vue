@@ -1,32 +1,74 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view />
-  </div>
+    <div id="app">
+        <nav-bar v-if="!['login'].includes($route.name)" />
+        <side-bar v-if="!['login'].includes($route.name)"/>
+        <router-view />
+    </div>
 </template>
 
+<script>
+import NavBar from "@/components/Main/Navbar.vue";
+import SideBar from '@/components/Main/Sidebar.vue';
+
+export default {
+    name: "App",
+    data() {
+        return {
+            theme: ''
+        }
+    },
+    components: {
+        NavBar, SideBar
+        },
+    mounted() {
+        let htmlElement = document.documentElement;
+        let CurrentTheme = localStorage.getItem("theme");
+        if (CurrentTheme === 'dark') {
+            htmlElement.setAttribute('theme', 'dark')
+            this.theme = 'dark'
+        } else {
+            htmlElement.setAttribute('theme', 'light');
+            this.theme = 'light'
+        }
+    },
+    
+};
+
+</script>
+
+
 <style lang="scss">
+@import '@/assets/css/Main/App.css';
+
+*:focus, *:focus-visible { outline: none !important; }
+
+@font-face {
+    font-family: "Almarai";
+    src: local("Almarai"),
+    url(./fonts/Almarai-Regular.ttf) format("truetype");
+}
+
+body{
+    background: var(--second-color) !important;
+    // height: auto;
+    font-size: 15px;
+}
+.btn{
+    color: white !important;
+}
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    font-family: 'Almarai', sans-serif !important;
+    // font-family: Avenir, Helvetica, Arial, sans-serif;
+    // -webkit-font-smoothing: antialiased;
+    // -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+
 }
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>

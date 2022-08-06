@@ -1,0 +1,67 @@
+
+.add-classification .form-row {
+    margin-top: 10px !important;
+    margin-bottom: 25px;
+}
+
+.add-classification .label-input {
+    text-align: right !important;
+}
+
+.button-plus {
+    background-color: white !important;
+    color: var(--gray-medium) !important;
+    padding: 0px;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+    border-color: var(--gray-medium) !important;
+}
+
+.button-option {
+    background-color: white !important;
+    color: var(--main-color) !important;
+    padding: 0px;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+    margin-right: 20px;
+}
+
+.add-classification .v-input__slot {
+    border: 1px solid #ced4da;
+    background: white !important;
+    border-radius: 30px !important;
+    height: 45px !important;
+    box-shadow: none !important;
+    min-height: 45px !important;
+}
+
+@media (max-width: 1263px) {
+    .add-classification .mdi-exclamation {
+        margin-top: -1px !important;
+    }
+}
+
+.add-classification .mdi-exclamation {
+    position: static !important;
+    left: -29px;
+    margin-right: -33px;
+    z-index: 100;
+    margin-top: -10px;
+}
+
+.add-classification .form-row{
+    margin-bottom: 20px !important;
+    margin-top: 0px !important;
+}
+
+.add-classification .label-row{
+    margin-bottom: 0px !important;
+}
+
+.add-classification .value-input{
+    padding: 0px !important;
+}
+.add-classification .plus-value{
+    padding-bottom: 0px !important;
+    padding-top: 6px !important;
+}
