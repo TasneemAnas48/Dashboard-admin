@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <nav-bar v-if="!['login'].includes($route.name)" />
-        <side-bar v-if="!['login'].includes($route.name)"/>
+        <nav-bar v-if="!['login', 'report-stores', 'report-classification', 'report-customer', 'report-rate'].includes($route.name)" />
+        <side-bar v-if="!['login', 'report-stores', 'report-classification', 'report-customer', 'report-rate'].includes($route.name)"/>
         <router-view />
     </div>
 </template>

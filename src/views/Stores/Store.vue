@@ -1,12 +1,12 @@
 <template>
     <div class="body-page view store" id="body-page">
+
         <div class="body">
-            <div class="card" style="padding-bottom: 20px;">
+            <div class="card" style="padding-bottom: 40px;">
                 <div class="card-body">
-                    <!-- <img :src="getCover()"/> -->
-                    <img src="../../assets/img/cover.jpg" class="cover" />
+                    <img :src="getCover()"  class="cover"/>
                     <div class="row" style="justify-content: space-between;">
-                        <div class="info">
+                        <div class="info col-lg-4">
                             <div class="title row">
                                 <h2>{{ store_name }}</h2>
                                 <div v-if="rate == 1">
@@ -35,26 +35,28 @@
                                     <v-icon>mdi-star</v-icon>
                                 </div>
                             </div>
-                            <div class="row row-detail col-lg-12">
+                            <div class="row row-detail col-lg-10">
                                 <p class="col-lg-7 left"> تاريخ الانضمام</p>
                                 <p class="col-lg-5 right"> {{ created_at }}</p>
                             </div>
-                            <div class="row row-detail col-lg-12">
+                            <div class="row row-detail col-lg-10">
                                 <p class="col-lg-7 left"> حالة المتجر</p>
-                                <p class="col-lg-5 right"> {{ status }}</p>
+                                <p class="col-lg-5 right" v-if="status == 1"> فعال</p>
+                                <p class="col-lg-5 right" v-else-if="status == 0"> غير فعال</p>
                             </div>
-                            <div class="row row-detail col-lg-12">
+                            <div class="row row-detail col-lg-10">
                                 <p class="col-lg-7 left"> التوصيل</p>
                                 <p class="col-lg-5 right"> {{ delevary }}</p>
                             </div>
                         </div>
                         <div>
-                            <img src="../../assets/img/logo2.jpg" class="logo" />
+                            <img :src="getLogo()" class="logo"/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- sales chart -->
         <div class="body">
             <div class="card" id="chart">
@@ -69,34 +71,6 @@
                     <div class="card-footer">
                         مخطط البيع السنوي لسنة 2021
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- rate table -->
-        <div class="body">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center add">
-                        تقييمات المنتجات
-                    </div>
-                </div>
-                <div class="card-body" style="padding: 0px">
-                    <v-app>
-                        <v-data-table class="col-lg-12 my-table" :headers="headers" :items="rowsRate"
-                            :hide-default-footer="true">
-                            <!-- <template v-slot:header.green>
-                                <v-icon color="green">mdi-emoticon-excited-outline</v-icon>
-                            </template>
-                            <template v-slot:header.yellow>
-                                <v-icon color="yellow">mdi-emoticon-neutral-outline</v-icon>
-                            </template>
-                            <template v-slot:header.red>
-                                <v-icon color="red">mdi-emoticon-sad-outline</v-icon>
-                            </template> -->
-                        </v-data-table>
-
-                    </v-app>
                 </div>
             </div>
         </div>
@@ -145,6 +119,35 @@
             </div>
         </div>
 
+
+        <!-- rate table -->
+        <div class="body rate">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center add">
+                        تقييمات المنتجات
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0px">
+                    <v-app>
+                        <v-data-table class="col-lg-12 my-table" :headers="headers" :items="rowsRate"
+                            :hide-default-footer="true">
+                            <template v-slot:header.green>
+                                <v-icon color="green">mdi-emoticon-excited-outline</v-icon>
+                            </template>
+                            <template v-slot:header.yellow>
+                                <v-icon color="yellow">mdi-emoticon-neutral-outline</v-icon>
+                            </template>
+                            <template v-slot:header.red>
+                                <v-icon color="red">mdi-emoticon-sad-outline</v-icon>
+                            </template>
+                        </v-data-table>
+
+                    </v-app>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </template>
@@ -160,7 +163,8 @@ export default {
     name: "Store",
     data() {
         return {
-            store_id:null,
+            store_id: null,
+
             series: [],
             chartOptions: {
                 chart: {
@@ -176,7 +180,7 @@ export default {
                 stroke: {
                     curve: "smooth",
                 },
-                colors: ['#af3a88', '#F5EFF3'],
+                colors: ['#0a66c2', '#F5EFF3'],
                 xaxis: {
                     categories: [
                         "كانون الثاني",
@@ -196,26 +200,34 @@ export default {
             },
 
             rows: [],
-            store_name: 'خيط وسنارة',
-            created_at: '4/4/2022',
-            status: 'فعال',
-            delevary: 'دمشق',
-            rate: 4,
+            store_name: '',
+            created_at: '',
+            status: null,
+            delevary: '',
+            rate: null,
+            brand:'',
+            image:'',
 
             // rate table
             rowsRate: [],
             headers: [
-                { text: 'المدة', value: 'id', align: 'center', },
+                { text: '#', value: 'time', align: 'center', },
                 { text: 'عدد المنتجات المباعة', value: 'number', align: 'center' },
                 { text: '', value: 'green', align: 'center' },
                 { text: '', value: 'yellow', align: 'center' },
                 { text: '', value: 'red', align: 'center' },
             ],
+            rowsTemp:[
+                {
+                    number:0, green:0, yellow:0, red:0, time:'الشهر الحالي'
+                },
+                {
+                    number:0, green:0, yellow:0, red:0, time:'الشهر السابق'
+                },
+            ],
 
             // groups
             groups: []
-
-
 
         };
     },
@@ -224,12 +236,43 @@ export default {
     },
 
     methods: {
-        // getCover() {
+        getCover() {
+            return "http://"+this.$store.state.ip+"uploads/stores/"+this.image
+        },
+        getLogo(){
+            return "http://"+this.$store.state.ip+"uploads/stores/"+this.brand
+        },
+        getData(){
+            this.axios.get("http://" + this.$store.state.ip + "api/store/profile/rating/" + this.store_id)
+                .then(res => {
+                    this.store_name = res.data.data[0].store_name
+                    this.rate = res.data.data[0].review
+                    this.status = res.data.data[0].status
+                    this.created_at = res.data.data[0].created_at
+                    this.brand = res.data.data[0].brand
+                    this.image = res.data.data[0].image
+                    this.delevary = res.data.data[0].delivery_area
+                    
+                    this.rowsTemp[0].number = res.data.data[0].num_sales_last_month
+                    this.rowsTemp[0].green = res.data.data[0].smile_last_month
+                    this.rowsTemp[0].yellow = res.data.data[0].good_last_month
+                    this.rowsTemp[0].red = res.data.data[0].bad_last_month
 
-        // },
-        // getLogo(){
+                    this.rowsTemp[1].number = res.data.data[0].num_sales_befor_2month
+                    this.rowsTemp[1].green = res.data.data[0].smile_last_2month
+                    this.rowsTemp[1].yellow = res.data.data[0].good_last_2month
+                    this.rowsTemp[1].red = res.data.data[0].bad_last_2month
 
-        // },
+                    this.rowsRate = this.rowsTemp
+
+                    this.$refs.chart_sales.updateSeries([{
+                    name: 'Sales',
+                    data: res.data.data[0].salles
+                }])
+
+                    console.log(res.data.data[0])
+                });
+        },
         getImageGroup(group) {
             return "http://" + this.$store.state.ip + "bayanImages/" + group.image
         },
@@ -237,7 +280,7 @@ export default {
             this.axios.get("http://" + this.$store.state.ip + "api/collection/collectionNane/" + this.store_id)
                 .then(res => {
                     this.groups = res.data
-                    console.log(res.data)
+                    // console.log(res.data)
                 });
         },
         viewProduct(item){
@@ -246,8 +289,9 @@ export default {
     },
     mounted() {
         this.store_id = this.$route.params.id
-        console.log(this.store_id)
+        // console.log(this.store_id)
         this.getGroup()
+        this.getData()
     },
     components: {
     },
@@ -275,7 +319,7 @@ export default {
 
 .store .title {
     margin-top: 30px;
-    margin-right: 20px;
+    margin-right: 40px;
 }
 
 .store .row-detail {
@@ -310,4 +354,5 @@ export default {
 .store .v-card{
     border-radius: 20px !important;
 }   
+
 </style>

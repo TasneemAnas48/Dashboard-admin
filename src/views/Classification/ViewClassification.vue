@@ -21,14 +21,9 @@
                         <v-data-table class="col-lg-12 my-table" :headers="headers" :items="rows" :search="search"
                             :page.sync="page" @page-count="pageCount = $event" :hide-default-footer="true"
                             v-if="status =='OK'">
-                            <template v-slot:items="props">
-                                <td>{{ props.item.id }}</td>
-                                <td>{{ props.item.classification }}</td>
-                                <td>{{ props.item.product }}</td>
-                            </template>
-                            <template v-slot:[`item.secondrayClassification`]="{ item }">
+                            <template v-slot:[`item.secondary_classiffication`]="{ item }">
                                 <div class="row" style="justify-content: center;">
-                                    <div class="classification" v-for="(i, index) in item.secondrayClassification"
+                                    <div class="classification" v-for="(i, index) in item.secondary_classiffication"
                                         :key="index">
                                         <td>{{ i.title }} </td>
                                     </div>
@@ -62,10 +57,10 @@ export default {
             pageCount: 0,
             search: '',
             headers: [
-                { text: 'الرقم', value: 'id', align: 'center', },
-                { text: 'الصنف الرئيسي', value: 'classification', align: 'center', },
-                { text: 'التصنيفات الثانوية', value: 'secondrayClassification', align: 'center', },
-                { text: 'عدد المنتجات', value: 'product', align: 'center', },
+                { text: 'الرقم', value: 'classification_id', align: 'center', },
+                { text: 'الصنف الرئيسي', value: 'classification_title', align: 'center', },
+                { text: 'التصنيفات الثانوية', value: 'secondary_classiffication', align: 'center', },
+                { text: 'عدد المنتجات', value: 'num_products', align: 'center', },
             ],
             rows: [],
             status:''
@@ -74,11 +69,11 @@ export default {
     methods: {
 
         getData() {
-            this.axios.get("http://" + this.$store.state.ip + "api/admin/classification/Show_Classification")
+            this.axios.get("http://" + this.$store.state.ip + "api/all_classiffications")
                 .then(res => {
                     this.status = res.statusText
-                    this.rows = res.data
-                    console.log(res.data)
+                    this.rows = res.data.data
+                    console.log(res.data.data)
                 });
         }
     },

@@ -83,13 +83,43 @@
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersStores"
                                     :items="rowsStores" :hide-default-footer="true" v-if="rowsStores.length > 0">
                                     <template v-slot:[`item.status`]="{ item }">
-                                        <td v-if="item.status == 'active'">
+                                        <td v-if="item.status == '1'">
                                             <b-button type="button" class=" button-active">فعال
                                             </b-button>
                                         </td>
                                         <td v-else>
                                             <b-button type="button" class="button-unactive">غير فعال
                                             </b-button>
+                                        </td>
+                                    </template>
+                                    <template v-slot:[`item.review`]="{ item }">
+                                        <td v-if="item.review ==  0">
+                                            لايوجد
+                                        </td>
+                                        <td v-else-if="item.review ==  1">
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review == 2">
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review == 3">
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review == 4">
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review == 5">
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
+                                            <v-icon color="yellow" >mdi-star</v-icon>
                                         </td>
                                     </template>
                                 </v-data-table>
@@ -162,6 +192,14 @@
                             <v-app>
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersCustomer"
                                     :items="rowsCustomer" :hide-default-footer="true" v-if="rowsCustomer.length > 0">
+                            <template v-slot:[`item.classifications`]="{ item }">
+                                <div class="row" style="justify-content: center;">
+                                    <div class="classification" v-for="(i, index) in item.classifications"
+                                        :key="index">
+                                        <td>{{ i.title }} </td>
+                                    </div>
+                                </div>
+                            </template>
                                 </v-data-table>
                                 <div v-else>
                                     <v-progress-circular :size="70" :width="7" color="var(--main-color)" indeterminate
@@ -192,6 +230,18 @@
                             <v-app>
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersRate"
                                     :items="rowsRate" :hide-default-footer="true" v-if="rowsRate.length > 0">
+                                    <template v-slot:[`item.review_value`]="{ item }">
+                                        <td v-if="item.review_value ==  0">
+                                            <v-icon color="red" >mdi-emoticon-sad-outline</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review_value == 1">
+                                            <v-icon color="yellow" >mdi-emoticon-neutral-outline</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review_value == 2">
+                                            <v-icon color="green" >mdi-emoticon-excited-outline</v-icon>
+                                        </td>
+                                        <td v-else-if="item.review_value == 3">لايوجد</td>
+                                    </template>
                                 </v-data-table>
                                 <div v-else>
                                     <v-progress-circular :size="70" :width="7" color="var(--main-color)" indeterminate
@@ -220,12 +270,10 @@ export default {
                 { text: 'الرقم', value: 'store_id', align: 'center', },
                 { text: 'الاسم', value: 'shop_name', align: 'center', },
                 { text: 'الوصف', value: 'discription', align: 'center', },
-                { text: 'الايميل', value: 'email', align: 'center', },
-                { text: 'عدد المنتجات', value: 'num_products', align: 'center', },
-                { text: 'عدد الطلبات المسلمة', value: 'orders_recieved', align: 'center', },
-                { text: 'عدد الطلبات المقبولة', value: 'orders_accepted', align: 'center', },
-                { text: 'التصنيف', value: 'class', align: 'center', },
-                { text: 'التقييم', value: 'rate', align: 'center', },
+                { text: ' المنتجات', value: 'num_products', align: 'center', },
+                { text: ' الطلبات المسلمة', value: 'orders_recieved', align: 'center', },
+                { text: ' الطلبات المقبولة', value: 'orders_accepted', align: 'center', },
+                { text: 'التقييم', value: 'review', align: 'center', },
                 { text: 'الحالة', value: 'status', align: 'center', },
             ],
             rowsStores: [],
@@ -242,11 +290,12 @@ export default {
 
             //customer-table
             headersCustomer: [
-                { text: 'الرقم', value: 'id', align: 'center', },
-                { text: 'الاسم', value: 'name', align: 'center', },
-                { text: 'تاريخ الانضمام', value: 'date', align: 'center', },
-                { text: 'عدد الطلبات', value: 'email', align: 'center', },
-                { text: 'التصنيفات', value: 'class', align: 'center', },
+                { text: 'الرقم', value: 'customer_id', align: 'center', },
+                { text: 'الاسم', value: 'customer_name', align: 'center', },
+                { text: 'الايميل', value: 'email', align: 'center', },
+                { text: 'تاريخ الانضمام', value: 'created_at', align: 'center', },
+                { text: 'عدد الطلبات', value: 'num_orders', align: 'center', },
+                { text: 'التصنيفات', value: 'classifications', align: 'center', },
             ],
             rowsCustomer: [],
 
@@ -254,11 +303,11 @@ export default {
             headersRate: [
                 { text: 'رقم المتجر', value: 'store_id', align: 'center', },
                 { text: 'اسم المتجر', value: 'store_name', align: 'center', },
-                { text: 'رقم المنتج', value: 'pro_id', align: 'center', },
-                { text: 'اسم المنتج', value: 'pro_name', align: 'center', },
-                { text: 'التقييم', value: 'rate', align: 'center', },
+                { text: 'رقم المنتج', value: 'product_id', align: 'center', },
+                { text: 'اسم المنتج', value: 'product_name', align: 'center', },
+                { text: 'التقييم', value: 'review_value', align: 'center', },
             ],
-            rowsRate: [{store_id:"4", store_name:"sdfsdf", pro_id:"9", pro_name:"yghbjk", rate:"2"}],
+            rowsRate: [],
         };
     },
     methods: {
@@ -301,11 +350,11 @@ export default {
             });
         },
         getRate() {
-            // this.axios.get("http://"+this.$store.state.ip+"api/all_reports")
-            // .then(res => {
-            //     this.rowsRate = res.data.data
-            //     console.log(res.data.data)
-            // });
+            this.axios.get("http://"+this.$store.state.ip+"api/review/prodcuts")
+            .then(res => {
+                this.rowsRate = res.data.data
+                console.log(res.data.data)
+            });
         },
 
     },
@@ -329,4 +378,10 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/Main/Dashboard.css';
+.classification {
+    padding: 5px 8px 5px 8px;
+    background-color: var(--second-color);
+    border-radius: 20px;
+    margin: 2px;
+}
 </style>

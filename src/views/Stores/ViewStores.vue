@@ -16,13 +16,50 @@
                         </v-card-title>
                         <v-data-table class="col-lg-12 my-table" :headers="headers" :items="rows" :search="search"
                             :page.sync="page" @page-count="pageCount = $event" :hide-default-footer="true"  v-if="status == 'OK'">
+                            
+
+                            <template v-slot:top>
+                                <v-dialog v-model="dialogActiveStatus" max-width="500px">
+                                    <v-card>
+                                        <v-spacer></v-spacer>
+                                        <v-card-title class="justify-content-center" style="padding-top: 30px">هل انت متأكد من انك تريد الغاء تفعيل المتجر
+                                        </v-card-title>
+                                        <v-card-actions style="padding-bottom: 30px">
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="var(--gray-medium)" text @click="closeDisActiveStore">لا تراجع
+                                            </v-btn>
+                                            <v-btn color="red" text @click="disActiveStore">نعم تأكيد
+                                            </v-btn>
+                                            <v-spacer></v-spacer>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                                <v-dialog v-model="dialogNotActiveStatus" max-width="500px">
+                                    <v-card>
+                                        <v-spacer></v-spacer>
+                                        <v-card-title class="justify-content-center" style="padding-top: 30px">هل انت متأكد من انك تريد اعادة تفعيل المتجر
+                                        </v-card-title>
+                                        <v-card-actions style="padding-bottom: 30px">
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="var(--gray-medium)" text @click="closeReActiveStore">لا تراجع
+                                            </v-btn>
+                                            <v-btn color="red" text @click="ReActiveStore">نعم تأكيد
+                                            </v-btn>
+                                            <v-spacer></v-spacer>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                            </template>
+                            
+                            
+                            
                             <template v-slot:[`item.status`]="{ item }">
                                 <td v-if="item.status == '1'">
-                                    <b-button type="button" class=" button-active">فعال 
+                                    <b-button type="button" class=" button-active"  @click="statusItem(item)">فعال 
                                     </b-button>
                                 </td>
                                 <td v-else>
-                                    <b-button type="button" class="button-unactive">غير فعال 
+                                    <b-button type="button" class="button-unactive"  @click="statusItem(item)">غير فعال 
                                     </b-button> 
                                 </td>
                             </template>
@@ -68,11 +105,50 @@ export default {
                 { text: 'إدارة', value: 'mangement', align: 'center', sortable: false,},
             ],
             rows: [],
-            status:''
+            status:'',
+            dialogActiveStatus: false,
+            dialogNotActiveStatus: false,
+            disActive_id: null,
+            Active_id: null
+            // switch1: null,
         };
     },
 
     methods: {
+        statusItem(item){
+            console.log(item.status)
+            if (item.status == '1'){
+                this.dialogActiveStatus = true
+                this.disActive_id = item.store_id
+            } else if(item.status == '0'){
+                this.dialogNotActiveStatus = true
+                this.Active_id = item.store_id
+            }
+        },
+        disActiveStore(){
+            console.log(this.disActive_id)
+            this.axios.post("http://"+this.$store.state.ip+"api/admin/WaitingStore/deactivate_store/"+ this.disActive_id)
+                .then((res) => {
+                    console.log(res)
+                });
+            this.dialogActiveStatus = false
+        },
+        ReActiveStore(){
+            console.log(this.Active_id)
+            this.axios.post("http://"+this.$store.state.ip+"api/admin/WaitingStore/activate_store/"+ this.Active_id)
+                .then((res) => {
+                    console.log(res)
+                });
+            this.dialogNotActiveStatus = false
+        },
+        closeDisActiveStore(){
+            this.dialogActiveStatus = false
+        },
+        closeReActiveStore(){
+            this.dialogNotActiveStatus = false
+        },
+
+
         viewItem(item){
             this.$router.replace({ name: 'store', params: {id: item.store_id} })
         },
@@ -99,4 +175,14 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/Stores/ViewStores.css';
+.v-input--switch__thumb {
+    margin-right: 25px !important;
+}
+
+.view-stores .my-table .v-input--switch {
+    margin-right: 45px !important;
+}
+.v-dialog{
+    border-radius: 30px !important;
+}
 </style>

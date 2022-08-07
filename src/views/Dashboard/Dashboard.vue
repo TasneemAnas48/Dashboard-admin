@@ -108,10 +108,6 @@
                             <v-data-table class="col-lg-12 my-table" :headers="headers" :items="rowsOrder"
                                 :hide-default-footer="true">
                             </v-data-table>
-                            <div class="text-center">
-                                <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
-                                </v-pagination>
-                            </div>
                         </v-app>
                     </div>
                 </div>
@@ -137,10 +133,6 @@
                                         {{ rowsCustomer.indexOf(item)+1 }}
                                     </template>
                                 </v-data-table>
-                                <div class="text-center">
-                                    <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
-                                    </v-pagination>
-                                </div>
                             </v-app>
                         </div>
                     </div>
@@ -192,10 +184,6 @@
                                         </td>
                                     </template>
                                 </v-data-table>
-                                <div class="text-center">
-                                    <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
-                                    </v-pagination>
-                                </div>
                             </v-app>
                         </div>
                     </div>
@@ -289,10 +277,9 @@ export default {
             //customer-table
             headersCustomer: [
                 {text: '#',  value: 'index', align: 'center'},
-                { text: 'الاسم', value: 'name', align: 'center' },
-                { text: 'الايميل', value: 'email', align: 'center' },
-                { text: 'المبلغ', value: 'total', align: 'center' },
-                { text: 'عدد الطلبات', value: 'orders' , align: 'center' },
+                { text: 'الاسم', value: 'customer_name', align: 'center' },
+                { text: 'المبلغ', value: 'total_price', align: 'center' },
+                { text: 'عدد الطلبات', value: 'num_orders' , align: 'center' },
             ],
             rowsCustomer: [],
 
@@ -330,6 +317,7 @@ export default {
                 this.objection = res.data.data.num_reports
                 this.join_request = res.data.data.num_login
                 this.rowsStore = res.data.data.best_store
+                this.rowsCustomer = res.data.data.best_customer
 
 
             });
