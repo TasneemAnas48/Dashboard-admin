@@ -16,9 +16,9 @@
                         </v-card-title>
                         <v-data-table class="col-lg-12 my-table" :headers="headers" :items="rows" :search="search"
                             :page.sync="page" @page-count="pageCount = $event" :hide-default-footer="true" v-if="status == 'OK'">
-                            <template v-slot:[`item.mangement`]="{ item }">
+                            <!-- <template v-slot:[`item.mangement`]="{ item }">
                                 <font-awesome-icon icon="fa fa-comments" class="fa-comments" @click="getId(item)"/>
-                            </template>
+                            </template> -->
                         </v-data-table>
                         <div v-else>
                             <v-progress-circular :size="70" :width="7" color="var(--main-color)" indeterminate
@@ -51,7 +51,7 @@ export default {
                 { text: 'الاسم', value: 'customer_name', align: 'center', },
                 { text: 'تاريخ الانضمام', value: 'created_at', align: 'center', },
                 { text: 'عدد الطلبات', value: 'num_orders', align: 'center', },
-                { text: 'مراسلة', value: 'mangement', align: 'center', sortable: false,},
+                // { text: 'مراسلة', value: 'mangement', align: 'center', sortable: false,},
             ],
             rows: [],
             status:''

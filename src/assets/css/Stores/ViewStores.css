@@ -161,9 +161,3 @@
     color: #ffffff !important;
     cursor: pointer !important;
 }
-
-.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show > .btn-secondary.dropdown-toggle, .btn-secondary:focus, .btn-secondary.focus{
-    border: 1px solid #40C93B !important;
-    background-color: #40C93B !important;
-    color: #ffffff !important;
-}

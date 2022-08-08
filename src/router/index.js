@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Login from "../views/Login/Login.vue";
 
 import ViewStores from "../views/Stores/ViewStores.vue";
+import ViewStoresUnactive from "../views/Stores/ViewStoresUnactive.vue";
 import Store from "../views/Stores/Store.vue";
 import Product from "../views/Stores/Product.vue";
 
@@ -28,8 +29,6 @@ import ReportRate from "../views/Report/ReportRate.vue";
 
 import Dashboard from "../views/Dashboard/Dashboard.vue";
 
-
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -42,6 +41,11 @@ const routes = [
         path: "/view-stores",
         name: "view-stores",
         component: ViewStores,
+    },
+    {
+        path: "/view-stores-unactive",
+        name: "view-stores-unactive",
+        component: ViewStoresUnactive,
     },
     {
         path: "/store/:id",

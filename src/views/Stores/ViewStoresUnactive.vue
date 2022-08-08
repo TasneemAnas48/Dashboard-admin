@@ -4,9 +4,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center add">
-                        المتاجر الفعالة
-                        <router-link to="/view-stores-unactive">
-                            <b-button class="button-view">المتاجر غير الفعالة </b-button>
+                        المتاجر غير الفعالة
+                        <router-link to="/view-stores">
+                            <b-button class="button-view">المتاجر الفعالة </b-button>
                         </router-link>
                     </div>
                 </div>
@@ -57,8 +57,8 @@
                             
                             
                             <template v-slot:[`item.status`]="{ item }">
-                                <td v-if="item.status == '1'">
-                                    <b-button type="button" class=" unactive"  @click="statusItem(item)">الغاء تفعيل 
+                                <td v-if="item.status == '0'">
+                                    <b-button type="button" class="activee"  @click="statusItem(item)">اعادة تفعيل 
                                     </b-button>
                                 </td>
                             </template>
@@ -160,7 +160,7 @@ export default {
         },
 
         getData(){
-            this.axios.get("http://"+this.$store.state.ip+"api/admin/Store/show_active")
+            this.axios.get("http://"+this.$store.state.ip+"api/admin/Store/show_deactive")
             .then(res => {
                 this.status = res.statusText
                 this.rows = res.data
@@ -188,16 +188,16 @@ export default {
 .v-dialog{
     border-radius: 30px !important;
 }
-.unactive{
-    color: #707070 !important;
+.activee{
+    color: #40C93B !important;
     font-size: 15px !important;
     background: white !important;
-    border: 1px #707070 solid !important;
+    border: 1px #40C93B solid !important;
     border-radius: 20px !important;
 }
-.unactive:hover{
+.activee:hover{
     color: white !important;
-    background: #707070 !important;
+    background: #40C93B !important;
     border: 1px white solid !important;
 }
 </style>
