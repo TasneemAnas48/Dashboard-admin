@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <apexchart type="donut"  height="350"  :options="chartOptions" :labels="labels" :series="series" style="margin-bottom:14px"></apexchart>
+                        <apexchart type="donut" ref="chart_class" height="350"  :options="chartOptions" :labels="labels" :series="series" style="margin-bottom:14px"></apexchart>
 
                     </div>
                 </div>
@@ -243,7 +243,7 @@ export default {
 
 
             // classification chart
-            series: [23, 11, 12, 10, 12],
+            series: [],
             
             chartOptions: {
                 chart: {
@@ -299,6 +299,9 @@ export default {
             join_request:'',
             page: 1,
             pageCount: 0,
+            data_class:[],
+            label_class:[],
+            classification:[],
         };
     },
     components: {
@@ -311,17 +314,39 @@ export default {
         getData(){
             this.axios.get("http://"+this.$store.state.ip+"api/dashboared/admin")
             .then(res => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 this.customer = res.data.data.num_customers
                 this.store = res.data.data.num_stores
                 this.objection = res.data.data.num_reports
                 this.join_request = res.data.data.num_login
                 this.rowsStore = res.data.data.best_store
                 this.rowsCustomer = res.data.data.best_customer
-
-
             });
-        }
+
+            this.axios.get("http://"+this.$store.state.ip+"api/all_classiffications")
+            .then(res => {
+                this.classification = res.data.data
+                this.getClassification()
+                // console.log(res.data.data)
+            })
+        },
+        getClassification(){
+            // console.log(this.classification)
+            for (let i = 0; i < this.classification.length; i++){
+                this.data_class[i] = this.classification[i].num_sales
+                this.label_class[i] = this.classification[i].classification_title
+            }
+            console.log(this.data_class)
+            console.log(this.label_class)
+
+            this.$refs.chart_class.updateSeries([{
+                data: [1, 2, 3, 3, 4],
+            }])
+            // this.$refs.chart_class.updateOptions([{
+            //     labels: ["w", 'c']
+            // }])
+            // console.log(this.$refs.chart_class)
+        },
     },
     mounted() {
         this.getData()

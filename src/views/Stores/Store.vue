@@ -266,9 +266,9 @@ export default {
                     this.rowsRate = this.rowsTemp
 
                     this.$refs.chart_sales.updateSeries([{
-                    name: 'Sales',
-                    data: res.data.data[0].salles
-                }])
+                        data: res.data.data[0].salles
+                    }])
+                    // console.log(this.$refs.chart_sales)
 
                     console.log(res.data.data[0])
                 });

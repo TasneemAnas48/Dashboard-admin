@@ -58,7 +58,7 @@
                             
                             <template v-slot:[`item.status`]="{ item }">
                                 <td v-if="item.status == '0'">
-                                    <b-button type="button" class="activee"  @click="statusItem(item)">اعادة تفعيل 
+                                    <b-button type="button" class="activeee"  @click="statusItem(item)">اعادة تفعيل 
                                     </b-button>
                                 </td>
                             </template>
@@ -188,14 +188,14 @@ export default {
 .v-dialog{
     border-radius: 30px !important;
 }
-.activee{
+.view-stores .activeee{
     color: #40C93B !important;
     font-size: 15px !important;
     background: white !important;
     border: 1px #40C93B solid !important;
     border-radius: 20px !important;
 }
-.activee:hover{
+.view-stores .activeee:hover{
     color: white !important;
     background: #40C93B !important;
     border: 1px white solid !important;
