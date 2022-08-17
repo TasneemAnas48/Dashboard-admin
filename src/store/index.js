@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         ip:'192.168.43.244:8000/',
+        id: 27,
     },
     getters: {},
     mutations: {},

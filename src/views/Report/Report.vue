@@ -69,7 +69,7 @@
         <div class="container" v-if="report == 'stores'">
             <div class="body row">
                 <div class="col-lg-12">
-                    <div class="card" style="margin: 0px">
+                    <div class="card" style="margin: 0px;height:110%">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center add">
                                 المتاجر
@@ -81,7 +81,8 @@
                         <div class="card-body" style="padding: 0px">
                             <v-app>
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersStores"
-                                    :items="rowsStores" :hide-default-footer="true" v-if="rowsStores.length > 0">
+                                    :items="rowsStores" :hide-default-footer="true" v-if="rowsStores.length > 0"
+                                    :page.sync="page" @page-count="pageCount = $event" >
                                     <template v-slot:[`item.status`]="{ item }">
                                         <td v-if="item.status == '1'">
                                             <b-button type="button" class=" button-active">فعال
@@ -129,6 +130,10 @@
                                         style="margin-top: 100px; margin-bottom: 150px;">
                                     </v-progress-circular>
                                 </div>
+                                <div class="text-center">
+                                    <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
+                                    </v-pagination>
+                                </div>
                             </v-app>
                         </div>
                     </div>
@@ -140,7 +145,7 @@
         <div class="container" v-if="report == 'classification'">
             <div class="body row">
                 <div class="col-lg-12">
-                    <div class="card" style="margin: 0px">
+                    <div class="card" style="margin: 0px;height:110%">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center add">
                                 التصنيفات
@@ -153,7 +158,8 @@
                             <v-app>
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersClassification"
                                     :items="rowsClassification" :hide-default-footer="true"
-                                    v-if="rowsClassification.length > 0">
+                                    v-if="rowsClassification.length > 0"
+                                    :page.sync="page" @page-count="pageCount = $event" >
                                     <template v-slot:[`item.secondary_classiffication`]="{ item }">
                                         <div class="row" style="justify-content: center;">
                                             <div class="classification"
@@ -168,6 +174,10 @@
                                         style="margin-top: 100px; margin-bottom: 150px;">
                                     </v-progress-circular>
                                 </div>
+                                <div class="text-center">
+                                    <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
+                                    </v-pagination>
+                                </div>
                             </v-app>
                         </div>
                     </div>
@@ -179,7 +189,7 @@
         <div class="container" v-if="report == 'customer'">
             <div class="body row">
                 <div class="col-lg-12">
-                    <div class="card" style="margin: 0px">
+                    <div class="card" style="margin: 0px;height:110%">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center add">
                                 الزبائن
@@ -191,7 +201,8 @@
                         <div class="card-body" style="padding: 0px">
                             <v-app>
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersCustomer"
-                                    :items="rowsCustomer" :hide-default-footer="true" v-if="rowsCustomer.length > 0">
+                                    :items="rowsCustomer" :hide-default-footer="true" v-if="rowsCustomer.length > 0"
+                                    :page.sync="page" @page-count="pageCount = $event" >
                             <template v-slot:[`item.classifications`]="{ item }">
                                 <div class="row" style="justify-content: center;">
                                     <div class="classification" v-for="(i, index) in item.classifications"
@@ -206,6 +217,10 @@
                                         style="margin-top: 100px; margin-bottom: 150px;">
                                     </v-progress-circular>
                                 </div>
+                                <div class="text-center">
+                                    <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
+                                    </v-pagination>
+                                </div>
                             </v-app>
                         </div>
                     </div>
@@ -217,7 +232,7 @@
         <div class="container" v-if="report == 'rate'">
             <div class="body row">
                 <div class="col-lg-12">
-                    <div class="card" style="margin: 0px">
+                    <div class="card" style="margin: 0px;height:110%">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center add">
                                 تقييمات المنتجات
@@ -229,7 +244,8 @@
                         <div class="card-body" style="padding: 0px">
                             <v-app>
                                 <v-data-table ref="myTable" class="col-lg-12 my-table" :headers="headersRate"
-                                    :items="rowsRate" :hide-default-footer="true" v-if="rowsRate.length > 0">
+                                    :items="rowsRate" :hide-default-footer="true" v-if="rowsRate.length > 0"
+                                    :page.sync="page" @page-count="pageCount = $event" >
                                     <template v-slot:[`item.review_value`]="{ item }">
                                         <td v-if="item.review_value ==  0">
                                             <v-icon color="red" >mdi-emoticon-sad-outline</v-icon>
@@ -248,6 +264,10 @@
                                         style="margin-top: 100px; margin-bottom: 150px;">
                                     </v-progress-circular>
                                 </div>
+                                <div class="text-center">
+                                    <v-pagination color=var(--main-color) v-model="page" :length="pageCount" circle>
+                                    </v-pagination>
+                                </div>
                             </v-app>
                         </div>
                     </div>
@@ -264,15 +284,17 @@ export default {
     data() {
         return {
             report: 'stores',
+            page: 1,
+            pageCount: 0,
 
             //stores-table
             headersStores: [
-                { text: 'الرقم', value: 'store_id', align: 'center', },
+                { text: 'الرقم', value: 'store_id', align: 'center', width:'100px'},
                 { text: 'الاسم', value: 'shop_name', align: 'center', },
                 { text: 'الوصف', value: 'discription', align: 'center', },
-                { text: ' المنتجات', value: 'num_products', align: 'center', },
-                { text: ' الطلبات المسلمة', value: 'orders_recieved', align: 'center', },
-                { text: ' الطلبات المقبولة', value: 'orders_accepted', align: 'center', },
+                { text: ' المنتجات', value: 'num_products', align: 'center',width:'120px' },
+                { text: ' الطلبات المسلمة', value: 'orders_recieved', align: 'center', width:'160px'},
+                { text: ' الطلبات المقبولة', value: 'orders_accepted', align: 'center', width:'160px'},
                 { text: 'التقييم', value: 'review', align: 'center', },
                 { text: 'الحالة', value: 'status', align: 'center', },
             ],

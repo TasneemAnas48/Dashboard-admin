@@ -63,22 +63,22 @@
         <div class="container">
             <div class="body row">
                 <!-- visit -->
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                 <div class="card" id="chart" style="margin: 0px">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center add">
-                            عدد الزيارات
+                            التصنيفات الاكثر مبيعا
                         </div>
                     </div>
                     <div class="card-body">
-                        <apexchart type="line" height="350" :options="chartOptions2" :series="series2"></apexchart>
+                        <apexchart ref="chart_sales" type="area" height="350" :options="chartOptions" :series="series"></apexchart>
 
                     </div>
                 </div>
                 </div>
 
                 <!-- classification -->
-                <div class="col-lg-6">
+                <!-- <div class="col-lg-6">
                     <div class="card" id="chart" style="margin: 0px">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center add">
@@ -90,7 +90,7 @@
 
                     </div>
                 </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -207,11 +207,7 @@ export default {
 
 
             //visit chart
-            series2: [
-                {
-                    data: [30, 41, 35, 51, 49, 62, 23],
-                },
-            ],
+            series2: [],
             chartOptions2: {
                 chart: {
                     height: 350,
@@ -226,7 +222,7 @@ export default {
                 stroke: {
                     curve: "smooth",
                 },
-                colors: ['#0a66c2'],
+                colors: ['#af3a88', '#F5EFF3'],
                 xaxis: {
                     categories: [
                         "سبت",
@@ -242,25 +238,26 @@ export default {
             },
 
 
-            // classification chart
             series: [],
-            
             chartOptions: {
                 chart: {
-                    type: 'donut',
-                },
-                labels: ["نطريز", "كروشيه", "اكسسوار", "خياطة", "العاب"],
-                responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                    width: 100
+                    height: 350,
+                    type: "area",
+                    zoom: {
+                        enabled: false,
                     },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-                }]
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    curve: "smooth",
+                },
+                colors: ['#0a66c2', '#0a66c2'],
+                xaxis: {
+                    categories: [
+                    ],
+                },
             },
 
 
@@ -339,13 +336,15 @@ export default {
             console.log(this.data_class)
             console.log(this.label_class)
 
-            this.$refs.chart_class.updateSeries([{
-                data: [1, 2, 3, 3, 4],
+            this.$refs.chart_sales.updateSeries([{
+                name: 'Sales',
+                data: this.data_class
             }])
-            // this.$refs.chart_class.updateOptions([{
-            //     labels: ["w", 'c']
-            // }])
-            // console.log(this.$refs.chart_class)
+            this.$refs.chart_sales.updateOptions({
+                xaxis: {
+                    categories: this.label_class
+                }
+            })
         },
     },
     mounted() {

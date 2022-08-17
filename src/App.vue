@@ -9,7 +9,7 @@
 <script>
 import NavBar from "@/components/Main/Navbar.vue";
 import SideBar from '@/components/Main/Sidebar.vue';
-
+import Pusher from 'pusher-js'
 export default {
     name: "App",
     data() {
@@ -20,16 +20,23 @@ export default {
     components: {
         NavBar, SideBar
         },
+    methods:{
+        getTheme(){
+            let htmlElement = document.documentElement
+            let CurrentTheme = localStorage.getItem("theme")
+            if (CurrentTheme === 'dark') {
+                htmlElement.setAttribute('theme', 'dark')
+                this.theme = 'dark'
+            } else {
+                htmlElement.setAttribute('theme', 'light');
+                this.theme = 'light'
+            }
+        },
+        
+    },
     mounted() {
-        let htmlElement = document.documentElement;
-        let CurrentTheme = localStorage.getItem("theme");
-        if (CurrentTheme === 'dark') {
-            htmlElement.setAttribute('theme', 'dark')
-            this.theme = 'dark'
-        } else {
-            htmlElement.setAttribute('theme', 'light');
-            this.theme = 'light'
-        }
+        localStorage.setItem("admin_id", this.$store.state.id)
+        this.getTheme()
     },
     
 };

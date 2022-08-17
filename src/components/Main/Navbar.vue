@@ -11,10 +11,17 @@
                             <b-card-header>
                                 الاشعارات
                             </b-card-header>
-                            <div class="item" v-for="(item, index) in items" :key="index">
+                            <div class="item" style="background-color: var(--second-color);" v-for="(item, index) in notification_data" :key="index">
                                 <b-card-text>
                                     <h5>{{ item.title }}</h5>
-                                    {{ item.subtitle }}
+                                    <p style="margin-top: 13px;margin-bottom: -5px">{{ item.message }}</p>
+                                </b-card-text>
+                                <b-dd-divider></b-dd-divider>
+                            </div>
+                            <div class="item" v-for="(item, index) in notification" :key="index">
+                                <b-card-text>
+                                    <h5>{{ item.title }}</h5>
+                                    <p style="margin-top: 13px;margin-bottom: -5px">{{ item.message }}</p>
                                 </b-card-text>
                                 <b-dd-divider></b-dd-divider>
                             </div>
@@ -72,27 +79,47 @@ export default {
     },
     data() {
         return {
-            name: 'تسنيم انس',
-            email: 'tasneemanas@gmail.com',
-
+            name: 'ادمن',
+            email: 'admin@admin.com',
             messages: 0,
-
-            items: [
-                {
-                    title: 'طلب جديد',
-                    subtitle: `تم وصول طلب جديد من المستخدم تسنيم`,
-                },
-                {
-                    title: 'رسالة جديد',
-                    subtitle: `تم وصول رسالة جديدة من المستخدم تسنيم`,
-                },
-                {
-                    title: 'تقييم جديد',
-                    subtitle: 'لديك تقييم واحد جديد',
-                },
-
-            ],
+            notification: null,
+            notification_data: [],
         }
+    },
+    mounted() {
+        this.getPusher()
+        this.getNotification()
+    },
+    methods:{
+        getPusher(){
+            // Pusher.logToConsole = true;
+            var id = localStorage.getItem("admin_id")
+            // console.log(id)
+            var channel = this.$pusher.subscribe("public-channel." + id)
+            var that = this;
+            channel.bind('pusher:subscription_succeeded', function() {})
+            channel.bind('NotificationEvent', function(data) {
+                // console.log(data)
+                that.notification_data.push(data)
+                that.notification_data = that.notification_data.reverse()
+                console.log(that.notification_data)
+                that.increase_messsage()
+                console.log(that.messages)
+            });
+            // console.log(this.$pusher)
+        },
+        increase_messsage(){
+            this.messages = this.messages + 1
+            console.log(this.messages)
+        },
+        getNotification(){
+            var id = localStorage.getItem("admin_id")
+            this.axios.get("http://"+this.$store.state.ip+"api/notification/getStore/"+ id)
+            .then(res => {
+                this.notification = res.data.data
+                this.notification = this.notification.reverse()
+            })
+        },
     }
 };
 </script>

@@ -43,6 +43,16 @@ Vue.use(VueCompositionAPI)
 import { ref, reactive } from '@vue/composition-api'
 
 
+// Pusher.logToConsole = true;
+Vue.use(require('vue-pusher'), {
+    api_key: '1ecb9f6c6b79e2404d36',
+    options: {
+        cluster: 'us2',
+        encrypted: true,
+        forceTLS: true,
+    }
+});
+
 
 
 Vue.config.productionTip = false
